@@ -3,7 +3,7 @@
 ---
 ## screenshots
 ### Homepage
-![homepage snap](https://github.com/sumitkumar1503/insurancemanagement/blob/master/static/screenshots/homepage.png?raw=true)
+![homepage snap](https://github.com/Lavina-khichi/IMS_Python_django_project/blob/main/static/screenshots/homepage.png))
 ### Admin Dashboard
 ![dashboard snap](https://github.com/sumitkumar1503/insurancemanagement/blob/master/static/screenshots/dashboard.png?raw=true)
 ### Policy Record
