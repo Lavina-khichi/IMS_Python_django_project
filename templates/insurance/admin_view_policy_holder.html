@@ -1,0 +1,458 @@
+{% extends 'insurance/adminbase.html' %}
+{% block content %}
+{%load static%}
+
+<head>
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, #0a3d62, #135b8d);
+            padding: 30px;
+            border-radius: 2rem;
+            margin-bottom: 30px;
+            color: white;
+            box-shadow: 0 20px 40px rgba(10, 61, 98, 0.2);
+        }
+        
+        .page-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .page-header h2 i {
+            color: #f9b81b;
+            margin-right: 15px;
+        }
+        
+        .page-header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.02);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-card.approved { border-left: 4px solid #10b981; }
+        .stat-card.pending { border-left: 4px solid #f9b81b; }
+        .stat-card.disapproved { border-left: 4px solid #ef4444; }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+        }
+        
+        .stat-icon.approved { background: #d1fae5; color: #065f46; }
+        .stat-icon.pending { background: #fff3cd; color: #856404; }
+        .stat-icon.disapproved { background: #fee2e2; color: #ef4444; }
+        
+        .filter-section {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+        
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8aa9c9;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 45px;
+            border: 2px solid #e1ecf5;
+            border-radius: 2rem;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+        
+        .search-box input:focus {
+            border-color: #f9b81b;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(249, 184, 27, 0.1);
+        }
+        
+        .filter-select {
+            padding: 0.8rem 2rem 0.8rem 1rem;
+            border: 2px solid #e1ecf5;
+            border-radius: 2rem;
+            color: #0a3d62;
+            font-weight: 500;
+            cursor: pointer;
+            background: white;
+            min-width: 150px;
+        }
+        
+        .table-container {
+            background: white;
+            border-radius: 2rem;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+            overflow-x: auto;
+        }
+        
+        .policy-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+        }
+        
+        .policy-table thead th {
+            background: #f8fcff;
+            color: #0a3d62;
+            font-weight: 700;
+            padding: 1rem;
+            font-size: 0.9rem;
+            border-radius: 1rem 1rem 0 0;
+        }
+        
+        .policy-table tbody tr {
+            background: #f8fcff;
+            border-radius: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .policy-table tbody tr:hover {
+            transform: scale(1.01);
+        }
+        
+        .policy-table td {
+            padding: 1.2rem 1rem;
+            color: #2c4f6e;
+            border-bottom: 1px solid #eef2f6;
+        }
+        
+        .customer-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .customer-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #0a3d62, #135b8d);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #f9b81b;
+            font-weight: 700;
+        }
+        
+        .policy-name {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .policy-icon {
+            width: 35px;
+            height: 35px;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #f9b81b;
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 0.4rem 1rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        
+        .status-badge.approved {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-badge.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-badge.disapproved {
+            background: #fee2e2;
+            color: #ef4444;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-approve {
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 0.4rem 1rem;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .btn-approve:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+        
+        .btn-reject {
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 0.4rem 1rem;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .btn-reject:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: #f8fcff;
+            border-radius: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .filter-section {
+                flex-direction: column;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<div class="container-fluid px-0">
+    <!-- Page Header -->
+    <div class="page-header">
+        <h2>
+            <i class="fas fa-user-tie"></i>
+            Policy Holders
+        </h2>
+        <p>Manage all policy applications and their status</p>
+    </div>
+    
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+        <a href="admin-view-approved-policy-holder" class="stat-card approved" style="text-decoration: none;">
+            <div class="stat-icon approved">
+                <i class="fas fa-user-check"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{ approved_count|default:"0" }}</h3>
+                <p>Approved</p>
+            </div>
+        </a>
+        <a href="admin-view-waiting-policy-holder" class="stat-card pending" style="text-decoration: none;">
+            <div class="stat-icon pending">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{ pending_count|default:"0" }}</h3>
+                <p>Pending</p>
+            </div>
+        </a>
+        <a href="admin-view-disapproved-policy-holder" class="stat-card disapproved" style="text-decoration: none;">
+            <div class="stat-icon disapproved">
+                <i class="fas fa-user-times"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{ disapproved_count|default:"0" }}</h3>
+                <p>Disapproved</p>
+            </div>
+        </a>
+    </div>
+    
+    <!-- Filter Section -->
+    <div class="filter-section">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Search by customer or policy name..." onkeyup="filterTable()">
+        </div>
+        <select class="filter-select" id="statusFilter" onchange="filterTable()">
+            <option value="all">All Status</option>
+            <option value="approved">Approved</option>
+            <option value="pending">Pending</option>
+            <option value="disapproved">Disapproved</option>
+        </select>
+    </div>
+    
+    <!-- Table Container -->
+    <div class="table-container">
+        <table class="policy-table" id="policyTable">
+            <thead>
+                <tr>
+                    <th>Serial No.</th>
+                    <th>Customer Name</th>
+                    <th>Policy Name</th>
+                    <th>Applied Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in policyrecords %}
+                <tr data-status="{{ t.status|lower }}">
+                    <td>{{ forloop.counter }}</td>
+                    <td>
+                        <div class="customer-info">
+                            <div class="customer-avatar">
+                                {{ t.customer|make_list|first|upper }}
+                            </div>
+                            {{ t.customer }}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="policy-name">
+                            <div class="policy-icon">
+                                <i class="fas fa-file-contract"></i>
+                            </div>
+                            {{ t.Policy }}
+                        </div>
+                    </td>
+                    <td>
+                        <i class="far fa-calendar-alt" style="color: #8aa9c9; margin-right: 5px;"></i>
+                        {{ t.creation_date|date:"d M Y" }}
+                    </td>
+                    <td>
+                        <span class="status-badge 
+                            {% if t.status == 'Approved' %}approved
+                            {% elif t.status == 'Pending' %}pending
+                            {% elif t.status == 'Disapproved' %}disapproved
+                            {% endif %}">
+                            <i class="fas 
+                                {% if t.status == 'Approved' %}fa-check-circle
+                                {% elif t.status == 'Pending' %}fa-clock
+                                {% elif t.status == 'Disapproved' %}fa-times-circle
+                                {% endif %}"></i>
+                            {{ t.status }}
+                        </span>
+                    </td>
+                    <td>
+                        {% if t.status == 'Pending' %}
+                        <div class="action-buttons">
+                            <a href="{% url 'approve-request' t.id %}" class="btn-approve" onclick="return confirm('Approve this policy application?')">
+                                <i class="fas fa-check"></i> Approve
+                            </a>
+                            <a href="{% url 'reject-request' t.id %}" class="btn-reject" onclick="return confirm('Reject this policy application?')">
+                                <i class="fas fa-times"></i> Reject
+                            </a>
+                        </div>
+                        {% else %}
+                        <span style="color: #8aa9c9; font-size: 0.9rem;">
+                            <i class="fas fa-check-circle"></i> Processed
+                        </span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">
+                        <div class="empty-state">
+                            <i class="fas fa-user-tie" style="font-size: 3rem; color: #cbd6e3;"></i>
+                            <h4 style="margin-top: 15px;">No Policy Holders</h4>
+                            <p>There are no policy applications yet.</p>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function filterTable() {
+        const searchInput = document.getElementById('searchInput').value.toLowerCase();
+        const statusFilter = document.getElementById('statusFilter').value;
+        const table = document.getElementById('policyTable');
+        const rows = table.getElementsByTagName('tr');
+        
+        for (let i = 1; i < rows.length; i++) {
+            const row = rows[i];
+            if (row.cells.length > 1) {
+                const customerName = row.cells[1].textContent.toLowerCase();
+                const policyName = row.cells[2].textContent.toLowerCase();
+                const status = row.dataset.status;
+                
+                const matchesSearch = customerName.includes(searchInput) || policyName.includes(searchInput);
+                const matchesStatus = statusFilter === 'all' || status === statusFilter;
+                
+                if (matchesSearch && matchesStatus) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+        }
+    }
+</script>
+
+{% endblock content %}

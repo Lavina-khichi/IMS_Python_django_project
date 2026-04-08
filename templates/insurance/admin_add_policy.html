@@ -1,0 +1,582 @@
+{% extends 'insurance/adminbase.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+<head>
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, #0a3d62, #135b8d);
+            padding: 30px;
+            border-radius: 2rem;
+            margin-bottom: 30px;
+            color: white;
+            box-shadow: 0 20px 40px rgba(10, 61, 98, 0.2);
+        }
+        
+        .page-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .page-header h2 i {
+            color: #f9b81b;
+            margin-right: 15px;
+        }
+        
+        .page-header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .breadcrumb-custom {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-top: 15px;
+        }
+        
+        .breadcrumb-custom a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .breadcrumb-custom a:hover {
+            color: #f9b81b;
+        }
+        
+        .breadcrumb-custom i {
+            color: #f9b81b;
+            font-size: 0.8rem;
+        }
+        
+        .breadcrumb-custom span {
+            color: #f9b81b;
+            font-weight: 600;
+        }
+        
+        /* Message styles */
+        .messages {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+        
+        .alert-success {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            color: #065f46;
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            margin-bottom: 10px;
+            animation: slideIn 0.5s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .alert-error {
+            background: #fee2e2;
+            border-left: 4px solid #ef4444;
+            color: #991b1b;
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            margin-bottom: 10px;
+            animation: slideIn 0.5s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .form-container {
+            background: white;
+            border-radius: 2rem;
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group-custom {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group-custom label {
+            font-weight: 600;
+            color: #0a3d62;
+            margin-bottom: 0.8rem;
+            display: block;
+            font-size: 1rem;
+        }
+        
+        .form-group-custom label i {
+            color: #f9b81b;
+            margin-right: 10px;
+            width: 20px;
+        }
+        
+        .input-wrapper {
+            position: relative;
+        }
+        
+        .input-wrapper i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8aa9c9;
+            font-size: 1rem;
+            z-index: 10;
+        }
+        
+        .form-control-custom {
+            width: 100%;
+            padding: 0.9rem 1rem 0.9rem 45px;
+            border: 2px solid #e1ecf5;
+            border-radius: 1.2rem;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .form-control-custom:focus {
+            border-color: #f9b81b;
+            box-shadow: 0 0 0 4px rgba(249, 184, 27, 0.15);
+            outline: none;
+        }
+        
+        .form-control-custom::placeholder {
+            color: #b0c8da;
+            font-style: italic;
+        }
+        
+        select.form-control-custom {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238aa9c9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 16px;
+            padding-right: 45px;
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, #0a3d62, #135b8d);
+            border: none;
+            border-radius: 3rem;
+            padding: 1.2rem 2.5rem;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: white;
+            box-shadow: 0 15px 30px rgba(10, 61, 98, 0.3);
+            transition: all 0.3s;
+            width: 100%;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        
+        .btn-submit::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-submit:hover::before {
+            left: 100%;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 40px rgba(10, 61, 98, 0.4);
+        }
+        
+        .btn-submit i {
+            margin-right: 10px;
+            color: #f9b81b;
+        }
+        
+        .info-box {
+            background: #f8fcff;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            margin-top: 30px;
+            border-left: 4px solid #f9b81b;
+        }
+        
+        .info-box h5 {
+            color: #0a3d62;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .info-box h5 i {
+            color: #f9b81b;
+            margin-right: 8px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #5e7d9c;
+        }
+        
+        .info-item i {
+            color: #10b981;
+            font-size: 1.1rem;
+        }
+        
+        /* Preview Card */
+        .preview-card {
+            background: linear-gradient(135deg, #f8fcff, white);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            margin-bottom: 30px;
+            border: 2px dashed #cbd6e3;
+        }
+        
+        .preview-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #0a3d62;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .preview-title i {
+            color: #f9b81b;
+        }
+        
+        .preview-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        
+        .preview-item {
+            background: white;
+            padding: 10px 15px;
+            border-radius: 1rem;
+            border: 1px solid #e1ecf5;
+        }
+        
+        .preview-item .label {
+            font-size: 0.8rem;
+            color: #8aa9c9;
+            margin-bottom: 5px;
+        }
+        
+        .preview-item .value {
+            font-weight: 700;
+            color: #0a3d62;
+            font-size: 1.1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 1.5rem;
+            }
+            
+            .page-header {
+                padding: 20px;
+            }
+            
+            .page-header h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<div class="container-fluid px-0">
+    <!-- Page Header -->
+    <div class="page-header">
+        <h2>
+            <i class="fas fa-plus-circle"></i>
+            Add New Policy
+        </h2>
+        <p>Create a comprehensive insurance policy for your customers</p>
+        <div class="breadcrumb-custom">
+            <a href="/admin-dashboard">Dashboard</a>
+            <i class="fas fa-chevron-right"></i>
+            <a href="/admin-policy">Policies</a>
+            <i class="fas fa-chevron-right"></i>
+            <span>Add Policy</span>
+        </div>
+    </div>
+    
+    <!-- Display Django messages -->
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="alert-{{ message.tags }}"{% endif %}>
+            <i class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %}"></i>
+            {{ message }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    
+    <!-- Live Preview Card -->
+    <div class="preview-card" id="previewCard">
+        <div class="preview-title">
+            <i class="fas fa-eye"></i>
+            <span>Live Preview</span>
+        </div>
+        <div class="preview-details" id="previewDetails">
+            <div class="preview-item">
+                <div class="label">Category</div>
+                <div class="value" id="previewCategory">-</div>
+            </div>
+            <div class="preview-item">
+                <div class="label">Policy Name</div>
+                <div class="value" id="previewName">-</div>
+            </div>
+            <div class="preview-item">
+                <div class="label">Sum Assurance</div>
+                <div class="value" id="previewSum">-</div>
+            </div>
+            <div class="preview-item">
+                <div class="label">Premium</div>
+                <div class="value" id="previewPremium">-</div>
+            </div>
+            <div class="preview-item">
+                <div class="label">Tenure</div>
+                <div class="value" id="previewTenure">-</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Form Container -->
+    <div class="form-container">
+        <form method="POST" autocomplete="off" id="addPolicyForm">
+            {% csrf_token %}
+            
+            <div class="form-row">
+                <div class="form-group-custom">
+                    <label for="category">
+                        <i class="fas fa-folder"></i>
+                        Category
+                    </label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-list"></i>
+                        {% render_field policyForm.category class="form-control-custom" id="category" onchange="updatePreview()" %}
+                    </div>
+                </div>
+                
+                <div class="form-group-custom">
+                    <label for="policy_name">
+                        <i class="fas fa-tag"></i>
+                        Policy Name
+                    </label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-file-signature"></i>
+                        {% render_field policyForm.policy_name class="form-control-custom" id="policy_name" placeholder="e.g., Jeevan Surbhi" onkeyup="updatePreview()" %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group-custom">
+                    <label for="sum_assurance">
+                        <i class="fas fa-coins"></i>
+                        Sum Assurance (₹)
+                    </label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-rupee-sign"></i>
+                        {% render_field policyForm.sum_assurance class="form-control-custom" id="sum_assurance" placeholder="e.g., 1000000" onkeyup="updatePreview()" %}
+                    </div>
+                </div>
+                
+                <div class="form-group-custom">
+                    <label for="premium">
+                        <i class="fas fa-money-bill-wave"></i>
+                        Premium (₹)
+                    </label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-rupee-sign"></i>
+                        {% render_field policyForm.premium class="form-control-custom" id="premium" placeholder="e.g., 5000" onkeyup="updatePreview()" %}
+                    </div>
+                </div>
+                
+                <div class="form-group-custom">
+                    <label for="tenure">
+                        <i class="fas fa-calendar-alt"></i>
+                        Tenure (Years)
+                    </label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-clock"></i>
+                        {% render_field policyForm.tenure class="form-control-custom" id="tenure" placeholder="e.g., 20" onkeyup="updatePreview()" %}
+                    </div>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-plus-circle"></i>
+                Create Policy
+            </button>
+        </form>
+        
+        <!-- Info Box -->
+        <div class="info-box">
+            <h5>
+                <i class="fas fa-lightbulb"></i>
+                Policy Creation Tips
+            </h5>
+            <div class="info-grid">
+                <div class="info-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Choose the right category</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Use clear policy names</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Set realistic sum assurance</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Calculate premium carefully</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Define appropriate tenure</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Preview before submitting</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+    // Update live preview
+    function updatePreview() {
+        const category = document.getElementById('category');
+        const policyName = document.getElementById('policy_name');
+        const sumAssurance = document.getElementById('sum_assurance');
+        const premium = document.getElementById('premium');
+        const tenure = document.getElementById('tenure');
+        
+        let categoryText = '-';
+        if (category && category.options && category.selectedIndex >= 0) {
+            categoryText = category.options[category.selectedIndex]?.text || '-';
+        }
+        
+        document.getElementById('previewCategory').textContent = categoryText;
+        document.getElementById('previewName').textContent = policyName.value || '-';
+        
+        if (sumAssurance.value) {
+            const num = parseInt(sumAssurance.value);
+            document.getElementById('previewSum').textContent = '₹' + (isNaN(num) ? sumAssurance.value : num.toLocaleString());
+        } else {
+            document.getElementById('previewSum').textContent = '-';
+        }
+        
+        if (premium.value) {
+            const num = parseInt(premium.value);
+            document.getElementById('previewPremium').textContent = '₹' + (isNaN(num) ? premium.value : num.toLocaleString());
+        } else {
+            document.getElementById('previewPremium').textContent = '-';
+        }
+        
+        document.getElementById('previewTenure').textContent = tenure.value ? tenure.value + ' years' : '-';
+    }
+    
+    // Format currency inputs
+    document.querySelectorAll('input[type="number"]').forEach(input => {
+        input.addEventListener('blur', function() {
+            if (this.value) {
+                const num = parseInt(this.value);
+                if (!isNaN(num)) {
+                    this.value = num;
+                    updatePreview();
+                }
+            }
+        });
+    });
+    
+    // Form submission with loading state - ACTUAL SUBMISSION
+    document.getElementById('addPolicyForm').addEventListener('submit', function(e) {
+        const submitBtn = this.querySelector('.btn-submit');
+        // Store original text
+        const originalText = submitBtn.innerHTML;
+        
+        // Change button to loading state
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Policy...';
+        submitBtn.disabled = true;
+        
+        // Allow the form to submit normally - DO NOT call preventDefault()
+        // The form will submit to the server and the page will refresh with Django messages
+    });
+    
+    // Input focus effects
+    document.querySelectorAll('.form-control-custom').forEach(input => {
+        input.addEventListener('focus', function() {
+            const icon = this.parentElement.querySelector('i');
+            if (icon) icon.style.color = '#f9b81b';
+        });
+        
+        input.addEventListener('blur', function() {
+            const icon = this.parentElement.querySelector('i');
+            if (icon) icon.style.color = '#8aa9c9';
+        });
+    });
+    
+    // Initialize preview
+    document.addEventListener('DOMContentLoaded', function() {
+        updatePreview();
+        
+        // If there are no options in category select, try to populate from available categories
+        const categorySelect = document.getElementById('category');
+        if (categorySelect && categorySelect.options.length === 0) {
+            console.warn('No categories available. Please add categories first.');
+        }
+    });
+    
+    // Handle case when category select might not be populated
+    // This ensures preview doesn't break
+    window.addEventListener('load', function() {
+        setTimeout(updatePreview, 100);
+    });
+</script>
+
+{% endblock content %}

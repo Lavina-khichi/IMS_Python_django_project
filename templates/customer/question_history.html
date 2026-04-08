@@ -1,0 +1,42 @@
+{% extends 'customer/customerbase.html' %}
+{% block content %}
+{% load static %}
+
+<div class="container-fluid px-0">
+  <div class="d-flex align-items-center mb-4">
+    <i class="fas fa-sync-alt fa-2x me-3" style="color: #f9b81b;"></i>
+    <h2 style="color: #0a3d62;">Question history</h2>
+  </div>
+
+  <div class="card-custom p-4">
+    <table class="table table-custom align-middle">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Question</th>
+          <th>Admin comment</th>
+          <th>Asked date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for t in questions %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td class="fw-semibold">{{t.description}}</td>
+          <td>
+            {% if t.admin_comment %}
+              <i class="fas fa-check-circle text-success me-1"></i> {{t.admin_comment}}
+            {% else %}
+              <span class="text-muted fst-italic">Awaiting reply</span>
+            {% endif %}
+          </td>
+          <td>{{t.asked_date|date:"d M Y"}}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4" class="text-center py-5">You haven't asked any questions yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

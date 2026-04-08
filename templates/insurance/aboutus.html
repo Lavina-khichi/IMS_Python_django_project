@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | Insurance Management</title>
+    <!-- Bootstrap 5 + Font Awesome 6 + Google Fonts -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f9ff 0%, #e8f0fa 100%);
+            min-height: 100vh;
+        }
+        
+        /* Hero Section */
+        .about-hero {
+            background: linear-gradient(135deg, #0a2b44, #1a4b6d);
+            padding: 100px 0 80px;
+            position: relative;
+            overflow: hidden;
+            margin-top: 70px;
+        }
+        
+        .about-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: rgba(249, 184, 27, 0.1);
+            border-radius: 50%;
+            animation: float 20s infinite;
+        }
+        
+        .about-hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -5%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            animation: float 15s infinite reverse;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(50px, -30px) rotate(120deg); }
+            66% { transform: translate(-30px, 50px) rotate(240deg); }
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            color: white;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .hero-icon {
+            width: 100px;
+            height: 100px;
+            background: rgba(249, 184, 27, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            border: 3px solid #f9b81b;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(249, 184, 27, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(249, 184, 27, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(249, 184, 27, 0); }
+        }
+        
+        .hero-icon i {
+            font-size: 3.5rem;
+            color: #f9b81b;
+        }
+        
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .hero-content h1 span {
+            color: #f9b81b;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .hero-content h1 span::after {
+            content: '';
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: rgba(249, 184, 27, 0.3);
+            z-index: -1;
+        }
+        
+        .hero-content .lead {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            line-height: 1.8;
+        }
+        
+        /* Main Content */
+        .main-container {
+            max-width: 1200px;
+            margin: -50px auto 50px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 20;
+        }
+        
+        /* Stats Cards */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 2rem;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            border-bottom: 4px solid transparent;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-10px);
+            border-bottom-color: #f9b81b;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.15);
+        }
+        
+        .stat-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #0a3d62, #135b8d);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        
+        .stat-icon i {
+            font-size: 2rem;
+            color: #f9b81b;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #0a3d62;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: #5e7d9c;
+            font-weight: 500;
+        }
+        
+        /* About Cards */
+        .about-card {
+            background: white;
+            border-radius: 2.5rem;
+            padding: 3rem;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+        
+        .about-card:hover {
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #0a3d62;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 15px;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: #f9b81b;
+            border-radius: 2px;
+        }
+        
+        .section-title p {
+            color: #5e7d9c;
+            font-size: 1.2rem;
+            margin-top: 20px;
+        }
+        
+        /* Mission & Vision */
+        .mission-vision {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .mv-card {
+            background: linear-gradient(135deg, #f8fcff, #ffffff);
+            border-radius: 2rem;
+            padding: 2.5rem;
+            text-align: center;
+            border: 1px solid rgba(10, 61, 98, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .mv-card:hover {
+            transform: translateY(-5px);
+            border-color: #f9b81b;
+        }
+        
+        .mv-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(249, 184, 27, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+        }
+        
+        .mv-icon i {
+            font-size: 2.5rem;
+            color: #f9b81b;
+        }
+        
+        .mv-card h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #0a3d62;
+            margin-bottom: 15px;
+        }
+        
+        .mv-card p {
+            color: #5e7d9c;
+            line-height: 1.8;
+        }
+        
+        /* Team Section */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .team-card {
+            background: white;
+            border-radius: 2rem;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+        }
+        
+        .team-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-bottom: 4px solid #f9b81b;
+        }
+        
+        .team-info {
+            padding: 1.5rem;
+        }
+        
+        .team-info h4 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #0a3d62;
+            margin-bottom: 5px;
+        }
+        
+        .team-info p {
+            color: #5e7d9c;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+        
+        .team-social {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .team-social a {
+            width: 35px;
+            height: 35px;
+            background: #f0f5fa;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0a3d62;
+            transition: all 0.3s;
+        }
+        
+        .team-social a:hover {
+            background: #f9b81b;
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        /* Values Section */
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+        }
+        
+        .value-item {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 1.5rem;
+            transition: all 0.3s;
+        }
+        
+        .value-item:hover {
+            background: #0a3d62;
+        }
+        
+        .value-item:hover i,
+        .value-item:hover h4,
+        .value-item:hover p {
+            color: white;
+        }
+        
+        .value-item i {
+            font-size: 2.5rem;
+            color: #f9b81b;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+        
+        .value-item h4 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #0a3d62;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+        
+        .value-item p {
+            color: #5e7d9c;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        /* Quote Section */
+        .quote-section {
+            background: linear-gradient(135deg, #0a3d62, #135b8d);
+            border-radius: 3rem;
+            padding: 4rem 3rem;
+            margin: 50px 0;
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .quote-section::before {
+            content: '"';
+            position: absolute;
+            top: -50px;
+            left: 20px;
+            font-size: 300px;
+            font-family: serif;
+            opacity: 0.1;
+            color: #f9b81b;
+        }
+        
+        .quote-section i {
+            font-size: 3rem;
+            color: #f9b81b;
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+        
+        .quote-section p {
+            font-size: 2rem;
+            font-weight: 300;
+            line-height: 1.5;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .quote-author {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .quote-author img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid #f9b81b;
+        }
+        
+        .quote-author h5 {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .quote-author p {
+            margin: 0;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            margin: 60px 0;
+        }
+        
+        .btn-home {
+            background: linear-gradient(135deg, #0a3d62, #135b8d);
+            border: none;
+            border-radius: 50px;
+            padding: 1.2rem 3.5rem;
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: white;
+            box-shadow: 0 20px 30px rgba(10, 61, 98, 0.3);
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-home i {
+            margin-right: 10px;
+            color: #f9b81b;
+            transition: all 0.3s;
+        }
+        
+        .btn-home:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 40px rgba(10, 61, 98, 0.4);
+            color: white;
+        }
+        
+        .btn-home:hover i {
+            transform: translateX(-5px);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-content .lead {
+                font-size: 1.1rem;
+            }
+            
+            .about-card {
+                padding: 1.5rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            
+            .quote-section p {
+                font-size: 1.5rem;
+            }
+        }
+        
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 1s ease forwards;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .stagger-item {
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    {% include "insurance/navbar.html" %}
+    
+    <!-- Hero Section -->
+    <section class="about-hero">
+        <div class="hero-content fade-in">
+            <div class="hero-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h1>About <span>Us</span></h1>
+            <p class="lead">Protecting what matters most, one policy at a time. With over 20 years of trust and transparency, we're redefining insurance.</p>
+        </div>
+    </section>
+    
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Stats Row -->
+        <div class="stats-row">
+            <div class="stat-card stagger-item" style="animation-delay: 0.1s">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-number">50K+</div>
+                <div class="stat-label">Happy Customers</div>
+            </div>
+            <div class="stat-card stagger-item" style="animation-delay: 0.2s">
+                <div class="stat-icon">
+                    <i class="fas fa-file-invoice"></i>
+                </div>
+                <div class="stat-number">100K+</div>
+                <div class="stat-label">Policies Issued</div>
+            </div>
+            <div class="stat-card stagger-item" style="animation-delay: 0.3s">
+                <div class="stat-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="stat-number">15+</div>
+                <div class="stat-label">Awards Won</div>
+            </div>
+            <div class="stat-card stagger-item" style="animation-delay: 0.4s">
+                <div class="stat-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-number">20+</div>
+                <div class="stat-label">Years Experience</div>
+            </div>
+        </div>
+        
+        <!-- Mission & Vision -->
+        <div class="about-card">
+            <div class="section-title">
+                <h2>Our Mission & Vision</h2>
+                <p>Driven by purpose, guided by values</p>
+            </div>
+            
+            <div class="mission-vision">
+                <div class="mv-card stagger-item" style="animation-delay: 0.5s">
+                    <div class="mv-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h3>Our Mission</h3>
+                    <p>To provide accessible, transparent, and reliable insurance solutions that protect families and businesses, giving them peace of mind for the future.</p>
+                </div>
+                <div class="mv-card stagger-item" style="animation-delay: 0.6s">
+                    <div class="mv-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3>Our Vision</h3>
+                    <p>To become the most trusted insurance partner globally, innovating constantly to make protection simple, fair, and inclusive for everyone.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quote Section -->
+        <div class="quote-section fade-in">
+            <i class="fas fa-quote-left"></i>
+            <p>“Every month that you send a check to the life insurance company, you're making a bet with them. Don't worry, one day you'll win.”</p>
+            <div class="quote-author">
+                <img src="{% static 'image/admin.png' %}" alt="Dinara">
+                <div>
+                    <h5>Dinara</h5>
+                    <p>Founder & CEO</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Our Values -->
+        <div class="about-card">
+            <div class="section-title">
+                <h2>Our Core Values</h2>
+                <p>The principles that guide everything we do</p>
+            </div>
+            
+            <div class="values-grid">
+                <div class="value-item stagger-item" style="animation-delay: 0.7s">
+                    <i class="fas fa-hand-holding-heart"></i>
+                    <h4>Trust</h4>
+                    <p>Building lasting relationships through honesty and reliability</p>
+                </div>
+                <div class="value-item stagger-item" style="animation-delay: 0.8s">
+                    <i class="fas fa-lightbulb"></i>
+                    <h4>Innovation</h4>
+                    <p>Constantly evolving to serve you better</p>
+                </div>
+                <div class="value-item stagger-item" style="animation-delay: 0.9s">
+                    <i class="fas fa-users"></i>
+                    <h4>Customer First</h4>
+                    <p>Your needs are at the heart of every decision</p>
+                </div>
+                <div class="value-item stagger-item" style="animation-delay: 1.0s">
+                    <i class="fas fa-shield-alt"></i>
+                    <h4>Integrity</h4>
+                    <p>Doing the right thing, always</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- CTA Section -->
+        <div class="cta-section fade-in">
+            <a href="/" class="btn-home">
+                <i class="fas fa-home"></i> Back to Home
+            </a>
+            <p style="margin-top: 20px; color: #5e7d9c;">
+                <i class="fas fa-shield-alt" style="color: #f9b81b;"></i>
+                Join thousands of satisfied customers today
+            </p>
+        </div>
+    </div>
+    
+    {% include "insurance/footer.html" %}
+    
+    <!-- JavaScript -->
+    <script>
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        document.querySelectorAll('.stagger-item, .fade-in').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

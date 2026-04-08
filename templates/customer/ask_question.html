@@ -1,0 +1,35 @@
+{% extends 'customer/customerbase.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="container-fluid px-0">
+  <div class="d-flex align-items-center mb-4">
+    <i class="fas fa-question-circle fa-2x me-3" style="color: #f9b81b;"></i>
+    <h2 style="color: #0a3d62;">Ask a question</h2>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card-custom p-5">
+        <form method="POST" autocomplete="off">
+          {% csrf_token %}
+          <div class="mb-4">
+            <label for="problem" class="form-label fw-bold" style="color: #0a3d62;"><i class="fas fa-pencil-alt me-2" style="color: #f9b81b;"></i>Describe your problem</label>
+            {% render_field questionForm.description class="form-control" placeholder="e.g., I need help with my policy renewal..." rows="5" style="border-radius: 1.5rem; border:2px solid #e0ecf5; padding:1.2rem;" %}
+          </div>
+          <button type="submit" class="btn btn-apply btn-lg px-5 py-3"><i class="fas fa-paper-plane me-2"></i>Submit question</button>
+        </form>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card-custom p-4 bg-white">
+        <h5 class="fw-bold"><i class="fas fa-lightbulb me-2" style="color: #f9b81b;"></i>Before you ask</h5>
+        <hr>
+        <p class="text-muted">• Check our FAQ section first.<br>• Provide policy number if applicable.<br>• We usually reply within 24h.</p>
+        <div class="text-center mt-4">
+          <i class="fas fa-headset fa-3x" style="color: #cfdeed;"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

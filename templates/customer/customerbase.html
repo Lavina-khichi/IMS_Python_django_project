@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap 5 (lightweight) + Font Awesome 6 (free) + Google Fonts -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: #f0f5fa;
+      color: #1e2f4a;
+      padding-top: 70px;
+    }
+    /* fixed top header */
+    .app-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 70px;
+      background: linear-gradient(135deg, #0a2b44 0%, #123b5e 100%);
+      box-shadow: 0 8px 20px rgba(0,20,30,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      z-index: 1030;
+      border-bottom: 2px solid #f9b81b;
+    }
+    .app-header .logo-area h3 {
+      color: white;
+      font-weight: 600;
+      font-size: 1.6rem;
+      letter-spacing: -0.5px;
+      margin: 0;
+    }
+    .app-header .logo-area i {
+      color: #f9b81b;
+      margin-right: 8px;
+      font-size: 1.8rem;
+    }
+    .logout-form {
+      display: inline;
+      margin: 0;
+    }
+    .logout-btn {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(249,184,27,0.5);
+      border-radius: 40px;
+      padding: 0.45rem 1.5rem;
+      color: white;
+      font-weight: 600;
+      transition: 0.2s;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .logout-btn i {
+      margin-right: 8px;
+      color: #f9b81b;
+    }
+    .logout-btn:hover {
+      background: #f9b81b;
+      color: #0a2b44;
+      border-color: #f9b81b;
+    }
+    .logout-btn:hover i {
+      color: #0a2b44;
+    }
+
+    /* sidebar */
+    .app-sidebar {
+      position: fixed;
+      top: 70px;
+      left: 0;
+      width: 260px;
+      height: calc(100vh - 70px);
+      background: white;
+      box-shadow: 6px 0 25px rgba(0,30,50,0.06);
+      z-index: 1020;
+      transition: all 0.25s;
+      overflow-y: auto;
+      border-right: 1px solid rgba(10,59,94,0.1);
+    }
+    .sidebar-compact {
+      width: 70px;
+    }
+    .sidebar-compact .profile-area, .sidebar-compact .menu-text {
+      display: none;
+    }
+    .sidebar-compact .menu-item i {
+      margin-right: 0;
+      font-size: 1.6rem;
+      padding-left: 8px;
+    }
+    .sidebar-compact .menu-item {
+      justify-content: center;
+      padding: 1rem 0;
+    }
+    /* profile section */
+    .profile-area {
+      text-align: center;
+      padding: 2rem 1rem 1.2rem;
+      background: #f9fcff;
+      border-bottom: 1px solid #e2ecf5;
+    }
+    .profile-img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #f9b81b;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+      margin-bottom: 0.8rem;
+    }
+    .profile-area h4 {
+      font-weight: 700;
+      color: #0a3d62;
+      margin-bottom: 0.2rem;
+    }
+    .profile-area .badge-role {
+      background: #f9b81b;
+      color: #0a2b44;
+      font-weight: 600;
+      font-size: 0.8rem;
+      border-radius: 30px;
+      padding: 0.3rem 1rem;
+      display: inline-block;
+    }
+    /* menu items */
+    .sidebar-menu {
+      padding: 1.5rem 0;
+    }
+    .menu-item {
+      display: flex;
+      align-items: center;
+      padding: 0.9rem 1.5rem;
+      color: #2c4f6e;
+      font-weight: 500;
+      transition: 0.2s;
+      border-left: 4px solid transparent;
+      text-decoration: none;
+    }
+    .menu-item i {
+      width: 28px;
+      font-size: 1.3rem;
+      color: #0a3d62;
+      margin-right: 14px;
+      transition: 0.2s;
+    }
+    .menu-item:hover {
+      background: #ecf5fd;
+      border-left-color: #f9b81b;
+      color: #0a3d62;
+    }
+    .menu-item.active {
+      background: #e0edfb;
+      border-left-color: #f9b81b;
+      font-weight: 600;
+      color: #0a3d62;
+    }
+    /* main content */
+    .main-content {
+      margin-left: 260px;
+      margin-top: 70px;
+      padding: 2rem 2.5rem;
+      transition: margin-left 0.25s;
+      min-height: calc(100vh - 70px);
+      background: #f0f5fa;
+    }
+    .main-content-expanded {
+      margin-left: 70px;
+    }
+    /* toggle button */
+    .toggle-sidebar {
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 1.8rem;
+      margin-right: 1.5rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .toggle-sidebar:hover {
+      color: #f9b81b;
+    }
+    /* responsive */
+    @media (max-width: 768px) {
+      .app-sidebar {
+        left: -260px;
+      }
+      .sidebar-open {
+        left: 0 !important;
+        box-shadow: 10px 0 30px rgba(0,0,0,0.2);
+      }
+      .main-content {
+        margin-left: 0 !important;
+        padding: 1.5rem;
+      }
+      .app-header {
+        padding: 0 1rem;
+      }
+    }
+    /* card & table styling consistent */
+    .card-custom {
+      background: white;
+      border-radius: 1.8rem;
+      box-shadow: 0 10px 30px rgba(0,30,50,0.05);
+      border: none;
+      overflow: hidden;
+    }
+    .table-custom {
+      background: white;
+      border-radius: 1.5rem;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.02);
+    }
+    .table-custom thead {
+      background: #0a3d62;
+      color: white;
+      font-weight: 600;
+    }
+    .table-custom th {
+      padding: 1rem;
+      font-size: 0.95rem;
+      border-bottom: none;
+    }
+    .table-custom td {
+      padding: 1rem;
+      vertical-align: middle;
+      border-bottom: 1px solid #eef4f9;
+    }
+    .btn-apply {
+      background: #f9b81b;
+      border: none;
+      border-radius: 40px;
+      padding: 0.3rem 1.3rem;
+      font-weight: 600;
+      color: #0a2b44;
+    }
+    .btn-apply:hover {
+      background: #e5a50f;
+    }
+  </style>
+</head>
+<body>
+  <!-- header -->
+  <header class="app-header">
+    <div class="d-flex align-items-center">
+      <button class="toggle-sidebar" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+      <div class="logo-area">
+        <i class="fas fa-shield-alt"></i>
+        <h3 class="d-inline">Insurance Management</h3>
+      </div>
+    </div>
+    <!-- Logout form with POST method (FIXED) -->
+    <form method="post" action="/logout" class="logout-form">
+      {% csrf_token %}
+      <button type="submit" class="logout-btn">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </form>
+  </header>
+
+  <!-- sidebar -->
+  <aside class="app-sidebar" id="sidebar">
+    <div class="profile-area">
+      <img src="{% static customer.profile_pic.url %}" class="profile-img" alt="profile">
+      <h4>{{request.user.first_name}} {{request.user.last_name}}</h4>
+      <span class="badge-role"><i class="fas fa-user-tag"></i> Customer</span>
+    </div>
+    <nav class="sidebar-menu">
+      <a href="/customer/customer-dashboard" class="menu-item {% if request.path == '/customer/customer-dashboard' %}active{% endif %}">
+        <i class="fas fa-tachometer-alt"></i> <span class="menu-text">Dashboard</span>
+      </a>
+      <a href="/customer/apply-policy" class="menu-item {% if request.path == '/customer/apply-policy' %}active{% endif %}">
+        <i class="fas fa-file-signature"></i> <span class="menu-text">Apply Policy</span>
+      </a>
+      <a href="/customer/history" class="menu-item {% if request.path == '/customer/history' %}active{% endif %}">
+        <i class="fas fa-clock"></i> <span class="menu-text">History</span>
+      </a>
+      <a href="/customer/ask-question" class="menu-item {% if request.path == '/customer/ask-question' %}active{% endif %}">
+        <i class="fas fa-question-circle"></i> <span class="menu-text">Ask Question</span>
+      </a>
+      <a href="/customer/question-history" class="menu-item {% if request.path == '/customer/question-history' %}active{% endif %}">
+        <i class="fas fa-sync-alt"></i> <span class="menu-text">Question History</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- main content -->
+  <main class="main-content" id="mainContent">
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <!-- scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // sidebar toggle (compact mode)
+    const toggleBtn = document.getElementById('sidebarToggle');
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('mainContent');
+    let compact = false;
+
+    toggleBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (window.innerWidth <= 768) {
+        sidebar.classList.toggle('sidebar-open');
+      } else {
+        compact = !compact;
+        if (compact) {
+          sidebar.classList.add('sidebar-compact');
+          mainContent.classList.add('main-content-expanded');
+        } else {
+          sidebar.classList.remove('sidebar-compact');
+          mainContent.classList.remove('main-content-expanded');
+        }
+      }
+    });
+
+    // handle active menu highlight based on url (already done via template)
+  </script>
+</body>
+</html>

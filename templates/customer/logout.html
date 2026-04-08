@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap 5 + Font Awesome + Google Fonts -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        body {
+            background: linear-gradient(145deg, #f0f7ff 0%, #e6f0fa 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            margin: 0;
+        }
+        .logout-card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(8px);
+            border-radius: 3rem;
+            box-shadow: 0 30px 60px rgba(10,61,98,0.2);
+            padding: 3.5rem 3rem;
+            max-width: 550px;
+            width: 100%;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+        .icon-lg {
+            font-size: 5.5rem;
+            color: #0a3d62;
+            background: #ecf5fc;
+            width: 130px;
+            height: 130px;
+            line-height: 130px !important;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 15px 30px rgba(10,61,98,0.1);
+        }
+        h2 {
+            font-weight: 700;
+            color: #0a3d62;
+            margin-bottom: 0.8rem;
+            font-size: 2.5rem;
+        }
+        .lead {
+            color: #376b8f;
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+        }
+        .timer-text {
+            background: #f9b81b;
+            color: #0a2b44;
+            font-weight: 600;
+            padding: 0.5rem 1.5rem;
+            border-radius: 60px;
+            display: inline-block;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        .btn-home {
+            background: #0a3d62;
+            border: none;
+            border-radius: 50px;
+            padding: 1rem 2.5rem;
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: white;
+            box-shadow: 0 10px 25px rgba(10,61,98,0.3);
+            transition: 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-home i {
+            margin-right: 10px;
+            color: #f9b81b;
+        }
+        .btn-home:hover {
+            background: #135b95;
+            transform: translateY(-4px);
+            box-shadow: 0 20px 35px rgba(10,61,98,0.4);
+            color: white;
+        }
+        .btn-outline-secondary {
+            border: 2px solid #9bb7d4;
+            background: transparent;
+            color: #2f5777;
+            border-radius: 50px;
+            padding: 0.8rem 1.8rem;
+            font-weight: 500;
+            margin-left: 15px;
+            transition: 0.2s;
+        }
+        .btn-outline-secondary:hover {
+            background: #d4e2f0;
+            border-color: #0a3d62;
+            color: #0a3d62;
+        }
+        @media (max-width: 480px) {
+            .logout-card {
+                padding: 2.5rem 1.5rem;
+            }
+            h2 {
+                font-size: 2rem;
+            }
+        }
+        .footer-note {
+            margin-top: 2rem;
+            color: #7999b5;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="logout-card">
+        <!-- large icon -->
+        <div class="icon-lg">
+            <i class="fas fa-door-open"></i>
+        </div>
+        
+        <h2>You're logged out</h2>
+        <p class="lead">Thank you for using Insurance Management System</p>
+        
+        <!-- auto-redirect timer display -->
+        <div class="timer-text" id="timer">
+            <i class="fas fa-clock me-2"></i> Redirecting to home in <span id="seconds">5</span>s
+        </div>
+        
+        <!-- action buttons -->
+        <div class="d-flex flex-wrap justify-content-center gap-3">
+            <a href="/" class="btn-home"><i class="fas fa-home"></i> Go to Home Now</a>
+            <a href="/customer/customerlogin" class="btn-outline-secondary btn"><i class="fas fa-sign-in-alt me-2"></i>Login Again</a>
+        </div>
+        
+        <div class="footer-note">
+            <i class="fas fa-shield-alt me-1" style="color: #f9b81b;"></i> You have been securely logged out.
+        </div>
+    </div>
+
+    <!-- javascript for countdown and redirect -->
+    <script>
+        (function() {
+            let secondsLeft = 5;
+            const secondsSpan = document.getElementById('seconds');
+            const timerDiv = document.getElementById('timer');
+            
+            const countdown = setInterval(function() {
+                secondsLeft--;
+                if (secondsSpan) secondsSpan.textContent = secondsLeft;
+                
+                if (secondsLeft <= 0) {
+                    clearInterval(countdown);
+                    window.location.href = '/';  // redirect to index/home page
+                }
+            }, 1000);
+            
+            // optional: if user clicks "Go to Home Now", clear timer to avoid conflict
+            document.querySelector('.btn-home').addEventListener('click', function(e) {
+                // but we still want the link to work, no need to clear timer, just let the href work.
+                // but we can clear timer to avoid double redirect (not necessary)
+                clearInterval(countdown);
+            });
+        })();
+    </script>
+</body>
+</html>

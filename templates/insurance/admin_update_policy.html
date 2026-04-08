@@ -1,0 +1,607 @@
+{% extends 'insurance/adminbase.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+<head>
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, #0a3d62, #135b8d);
+            padding: 30px;
+            border-radius: 2rem;
+            margin-bottom: 30px;
+            color: white;
+            box-shadow: 0 20px 40px rgba(10, 61, 98, 0.2);
+        }
+        
+        .page-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .page-header h2 i {
+            color: #f9b81b;
+            margin-right: 15px;
+        }
+        
+        .page-header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .filter-section {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+        
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8aa9c9;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 45px;
+            border: 2px solid #e1ecf5;
+            border-radius: 2rem;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+        
+        .search-box input:focus {
+            border-color: #f9b81b;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(249, 184, 27, 0.1);
+        }
+        
+        .filter-select {
+            padding: 0.8rem 2rem 0.8rem 1rem;
+            border: 2px solid #e1ecf5;
+            border-radius: 2rem;
+            color: #0a3d62;
+            font-weight: 500;
+            cursor: pointer;
+            background: white;
+            min-width: 150px;
+        }
+        
+        .policies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+        }
+        
+        .policy-card {
+            background: white;
+            border-radius: 2rem;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .policy-card:hover {
+            transform: translateY(-5px);
+            border-color: #f9b81b;
+            box-shadow: 0 25px 50px rgba(249, 184, 27, 0.15);
+        }
+        
+        .policy-header {
+            background: linear-gradient(135deg, #0a3d62, #135b8d);
+            padding: 1.5rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .policy-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #f9b81b;
+        }
+        
+        .policy-header h4 {
+            margin: 0;
+            font-weight: 700;
+            font-size: 1.2rem;
+            flex: 1;
+        }
+        
+        .category-badge {
+            background: #f9b81b;
+            color: #0a2b44;
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .policy-body {
+            padding: 1.5rem;
+        }
+        
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .detail-item {
+            background: #f8fcff;
+            padding: 1rem;
+            border-radius: 1rem;
+        }
+        
+        .detail-label {
+            color: #8aa9c9;
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+        
+        .detail-value {
+            color: #0a3d62;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .detail-value small {
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: #8aa9c9;
+        }
+        
+        .policy-footer {
+            padding: 1rem 1.5rem 1.5rem;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-update {
+            flex: 1;
+            background: #f9b81b;
+            color: #0a2b44;
+            border: none;
+            border-radius: 40px;
+            padding: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        
+        .btn-update:hover {
+            background: #e5a50f;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(249, 184, 27, 0.3);
+        }
+        
+        .btn-view {
+            flex: 1;
+            background: #0a3d62;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        
+        .btn-view:hover {
+            background: #135b8d;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(10, 61, 98, 0.3);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 2rem;
+            grid-column: 1/-1;
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            color: #cbd6e3;
+            margin-bottom: 20px;
+        }
+        
+        .empty-state h4 {
+            color: #0a3d62;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .empty-state p {
+            color: #8aa9c9;
+            margin-bottom: 20px;
+        }
+        
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9998;
+            backdrop-filter: blur(5px);
+        }
+        
+        .update-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2.5rem;
+            border-radius: 2rem;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .update-modal.show,
+        .modal-overlay.show {
+            display: block;
+        }
+        
+        .modal-icon {
+            width: 70px;
+            height: 70px;
+            background: #f9b81b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: #0a2b44;
+            font-size: 2rem;
+        }
+        
+        .modal-title {
+            color: #0a3d62;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #0a3d62;
+            margin-bottom: 8px;
+        }
+        
+        .form-group label i {
+            color: #f9b81b;
+            margin-right: 8px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1.2rem;
+            border: 2px solid #e1ecf5;
+            border-radius: 1rem;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: #f9b81b;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(249, 184, 27, 0.1);
+        }
+        
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238aa9c9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 16px;
+            padding-right: 45px;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn-save {
+            flex: 1;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-save:hover {
+            background: #059669;
+        }
+        
+        .btn-close {
+            flex: 1;
+            background: #e2e8f0;
+            color: #2c4f6e;
+            border: none;
+            border-radius: 40px;
+            padding: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-close:hover {
+            background: #cbd5e1;
+        }
+        
+        @media (max-width: 768px) {
+            .policies-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .update-modal {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<div class="container-fluid px-0">
+    <!-- Page Header -->
+    <div class="page-header">
+        <h2>
+            <i class="fas fa-edit"></i>
+            Update Policies
+        </h2>
+        <p>Select a policy to modify its details</p>
+    </div>
+    
+    <!-- Filter Section -->
+    <div class="filter-section">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Search policies..." onkeyup="filterPolicies()">
+        </div>
+        <select class="filter-select" id="categoryFilter" onchange="filterPolicies()">
+            <option value="all">All Categories</option>
+            {% for category in categories %}
+            <option value="{{ category }}">{{ category }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    <!-- Policies Grid -->
+    <div class="policies-grid" id="policiesGrid">
+        {% for t in policies %}
+        <div class="policy-card policy-item" data-category="{{ t.category }}" data-name="{{ t.policy_name|lower }}">
+            <div class="policy-header">
+                <div class="policy-icon">
+                    <i class="fas fa-file-contract"></i>
+                </div>
+                <h4>{{ t.policy_name }}</h4>
+                <span class="category-badge">{{ t.category }}</span>
+            </div>
+            <div class="policy-body">
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">Sum Assurance</div>
+                        <div class="detail-value">₹{{ t.sum_assurance|floatformat:0 }}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Premium</div>
+                        <div class="detail-value">₹{{ t.premium|floatformat:0 }}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Tenure</div>
+                        <div class="detail-value">{{ t.tenure }} <small>years</small></div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Created</div>
+                        <div class="detail-value">{{ t.creation_date|date:"d M Y" }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="policy-footer">
+                <button class="btn-update" onclick="showUpdateModal('{{ t.id }}', '{{ t.policy_name|escapejs }}', '{{ t.category|escapejs }}', '{{ t.sum_assurance }}', '{{ t.premium }}', '{{ t.tenure }}')">
+                    <i class="fas fa-edit"></i> Update
+                </button>
+                <a href="{% url 'admin-view-policy' %}" class="btn-view">
+                    <i class="fas fa-eye"></i> View
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="empty-state">
+            <i class="fas fa-file-invoice"></i>
+            <h4>No Policies Found</h4>
+            <p>There are no policies available to update.</p>
+            <a href="/admin-add-policy" class="btn-primary-custom">
+                <i class="fas fa-plus"></i> Add Policy
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Update Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal()"></div>
+<div class="update-modal" id="updateModal">
+    <div class="modal-icon">
+        <i class="fas fa-edit"></i>
+    </div>
+    <h3 class="modal-title">Update Policy</h3>
+    <form method="post" action="" id="updateForm">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="category">
+                <i class="fas fa-folder"></i>
+                Category
+            </label>
+            <select class="form-control" id="category" name="category" required>
+                {% for category in categories %}
+                <option value="{{ category }}">{{ category }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="policy_name">
+                <i class="fas fa-tag"></i>
+                Policy Name
+            </label>
+            <input type="text" class="form-control" id="policy_name" name="policy_name" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="sum_assurance">
+                <i class="fas fa-coins"></i>
+                Sum Assurance (₹)
+            </label>
+            <input type="number" class="form-control" id="sum_assurance" name="sum_assurance" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="premium">
+                <i class="fas fa-money-bill-wave"></i>
+                Premium (₹)
+            </label>
+            <input type="number" class="form-control" id="premium" name="premium" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="tenure">
+                <i class="fas fa-calendar-alt"></i>
+                Tenure (Years)
+            </label>
+            <input type="number" class="form-control" id="tenure" name="tenure" required>
+        </div>
+        
+        <div class="modal-buttons">
+            <button type="submit" class="btn-save">
+                <i class="fas fa-save"></i> Save Changes
+            </button>
+            <button type="button" class="btn-close" onclick="closeModal()">
+                <i class="fas fa-times"></i> Cancel
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+    let currentPolicyId = null;
+    
+    function showUpdateModal(policyId, policyName, category, sumAssurance, premium, tenure) {
+        currentPolicyId = policyId;
+        document.getElementById('policy_name').value = policyName;
+        document.getElementById('category').value = category;
+        document.getElementById('sum_assurance').value = sumAssurance;
+        document.getElementById('premium').value = premium;
+        document.getElementById('tenure').value = tenure;
+        document.getElementById('updateForm').action = "{% url 'update-policy' 0 %}".replace('0', policyId);
+        document.getElementById('modalOverlay').classList.add('show');
+        document.getElementById('updateModal').classList.add('show');
+    }
+    
+    function closeModal() {
+        document.getElementById('modalOverlay').classList.remove('show');
+        document.getElementById('updateModal').classList.remove('show');
+    }
+    
+    function filterPolicies() {
+        const searchInput = document.getElementById('searchInput').value.toLowerCase();
+        const categoryFilter = document.getElementById('categoryFilter').value;
+        const policies = document.querySelectorAll('.policy-item');
+        
+        policies.forEach(policy => {
+            const name = policy.dataset.name;
+            const category = policy.dataset.category;
+            
+            const matchesSearch = name.includes(searchInput);
+            const matchesCategory = categoryFilter === 'all' || category === categoryFilter;
+            
+            if (matchesSearch && matchesCategory) {
+                policy.style.display = '';
+            } else {
+                policy.style.display = 'none';
+            }
+        });
+    }
+    
+    // Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
+    
+    // Form submission with loading state
+    document.getElementById('updateForm').addEventListener('submit', function(e) {
+        const submitBtn = this.querySelector('.btn-save');
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+        submitBtn.disabled = true;
+    });
+    
+    // Initialize filter
+    document.addEventListener('DOMContentLoaded', function() {
+        filterPolicies();
+    });
+</script>
+
+{% endblock content %}

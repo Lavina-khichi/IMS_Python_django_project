@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap 4 + Font Awesome (keep original but add Inter font for modernity) -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- Google Font for a cleaner look -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+  <style type="text/css">
+    * {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    .bs-example {
+      margin: 0px;
+    }
+    /* Modern dark navbar with subtle gradient */
+    .navbar.bg-dark {
+      background: linear-gradient(145deg, #0a1a2b 0%, #132b41 100%) !important;
+      box-shadow: 0 8px 20px rgba(0,20,30,0.15);
+      padding: 0.6rem 1.5rem;
+      border-bottom: 1px solid rgba(255,215,0,0.2);
+    }
+    /* Brand styling */
+    .navbar-brand {
+      font-size: 1.35rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      transition: 0.2s;
+    }
+    .navbar-brand:hover {
+      transform: translateY(-1px);
+      text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    .navbar-brand i {
+      color: #f9b81b;
+      margin-right: 8px;
+      font-size: 1.6rem;
+      vertical-align: middle;
+    }
+    /* nav links */
+    .navbar-nav .nav-link {
+      font-weight: 500;
+      padding: 0.6rem 1.2rem !important;
+      margin: 0 0.2rem;
+      border-radius: 40px;
+      color: rgba(255,255,255,0.85) !important;
+      transition: 0.2s;
+      font-size: 1rem;
+    }
+    .navbar-nav .nav-link i {
+      margin-right: 6px;
+      font-size: 1rem;
+      color: #f9b81b;
+      opacity: 0.9;
+    }
+    .navbar-nav .nav-link:hover {
+      background: rgba(249,184,27,0.12);
+      color: white !important;
+    }
+    .navbar-nav .nav-link.active {
+      background: rgba(249,184,27,0.18);
+      color: white !important;
+      font-weight: 600;
+    }
+    /* extra separation for right side */
+    .navbar-nav:last-child .nav-link {
+      border-left: 1px solid rgba(255,255,240,0.1);
+      border-radius: 0;
+    }
+    /* responsive toggler */
+    .navbar-toggler {
+      border: 1px solid rgba(249,184,27,0.3);
+    }
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(249, 184, 27, 0.8)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+    /* if fixed-top, add padding to body */
+    body {
+      padding-top: 76px;
+    }
+    @media (max-width: 768px) {
+      .navbar-brand {
+        font-size: 1.2rem;
+      }
+      .navbar-nav .nav-link {
+        padding-left: 1rem !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bs-example">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background: linear-gradient(145deg, #0a1a2b 0%, #132b41 100%);">
+      <!-- Brand with icon: keep original text but add a shield icon for IMS -->
+      <a class="navbar-brand" href="/" style="color: #ffffff; text-decoration: none; display: flex; align-items: center;">
+        <i class="fa fa-shield" aria-hidden="true" style="font-size: 1.8rem; margin-right: 8px; color: #f9b81b;"></i>
+        <span style="font-weight: 600; letter-spacing: -0.3px;">Insurance Management System</span>
+      </a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+        <!-- Left side navigation: Customer & Admin -->
+        <div class="navbar-nav">
+          <!-- invisible spacer (originally there was an empty <p> but we replace with subtle active dummy if needed) -->
+          <!-- The original had a <p> with padding; we remove it for cleaner look but keep spacing via margins -->
+          <a href="/customer/customerclick" class="nav-item nav-link">
+            <i class="fa fa-users" aria-hidden="true"></i> Customer
+          </a>
+          <a href="/adminlogin" class="nav-item nav-link">
+            <i class="fa fa-lock" aria-hidden="true"></i> Admin
+          </a>
+        </div>
+
+        <!-- Right side navigation: About & Contact (with icons) -->
+        <div class="navbar-nav">
+          <a href="/aboutus" class="nav-item nav-link">
+            <i class="fa fa-info-circle" aria-hidden="true"></i> About Us
+          </a>
+          <a href="/contactus" class="nav-item nav-link">
+            <i class="fa fa-envelope" aria-hidden="true"></i> Contact Us
+          </a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Bootstrap 4 + Font Awesome 5 (for icons) & Google Fonts -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style media="screen">
+    * {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    body {
+      background: #f4f7fc;
+      padding-top: 76px; /* space for fixed navbar */
+      color: #1e2f4a;
+    }
+    /* modern jumbotron with gradient and soft shadow */
+    .jumbotron {
+      margin-top: 0px;
+      margin-bottom: 0px;
+      background: linear-gradient(145deg, #ffffff 0%, #f8fcff 100%);
+      border-radius: 0 0 3rem 3rem;
+      box-shadow: 0 15px 35px rgba(10,61,98,0.08);
+      padding: 4rem 2rem !important;
+      border-bottom: 1px solid rgba(10,61,98,0.1);
+    }
+    .jumbotron h1 {
+      text-align: center;
+      font-weight: 700;
+      color: #0a3d62;
+      font-size: 3.2rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 10px rgba(10,61,98,0.08);
+    }
+    .jumbotron .lead {
+      font-size: 1.4rem;
+      color: #2c5275;
+      font-weight: 400;
+    }
+    .jumbotron hr {
+      width: 120px;
+      border-top: 4px solid #f9b81b;
+      border-radius: 4px;
+      margin: 2rem auto;
+    }
+    /* button styling – modern, with icons & hover lift */
+    .btn-primary {
+      background: #0a3d62;
+      border: none;
+      border-radius: 50px;
+      padding: 0.9rem 2.5rem;
+      font-weight: 600;
+      font-size: 1.2rem;
+      box-shadow: 0 10px 20px rgba(10,61,98,0.15);
+      transition: all 0.2s;
+      margin: 0 0.5rem 1rem 0.5rem;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .btn-primary:hover {
+      background: #155b95;
+      transform: translateY(-4px);
+      box-shadow: 0 20px 30px rgba(10,61,98,0.25);
+    }
+    .btn-primary i {
+      margin-right: 10px;
+      font-size: 1.2rem;
+      color: #f9b81b;
+    }
+    /* second outline button for login – accent variant */
+    .btn-outline-accent {
+      background: transparent;
+      border: 2px solid #f9b81b;
+      color: #0a3d62;
+      border-radius: 50px;
+      padding: 0.9rem 2.5rem;
+      font-weight: 600;
+      font-size: 1.2rem;
+      box-shadow: 0 8px 18px rgba(249,184,27,0.1);
+      transition: 0.2s;
+      margin: 0 0.5rem 1rem 0.5rem;
+    }
+    .btn-outline-accent:hover {
+      background: #f9b81b;
+      color: #0a3d62;
+      transform: translateY(-4px);
+      box-shadow: 0 20px 25px rgba(249,184,27,0.35);
+      border-color: #f9b81b;
+    }
+    .btn-outline-accent i {
+      margin-right: 8px;
+      color: #0a3d62;
+    }
+    /* card deck for extra interactivity – feature highlights */
+    .feature-cards {
+      padding: 3rem 1rem 5rem;
+    }
+    .card-custom {
+      border: none;
+      border-radius: 2rem;
+      background: white;
+      padding: 2rem 1.8rem;
+      box-shadow: 0 15px 30px rgba(0,30,50,0.06);
+      transition: all 0.2s;
+      height: 100%;
+      text-align: center;
+      border-bottom: 4px solid transparent;
+    }
+    .card-custom:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 30px 45px rgba(10,61,98,0.12);
+      border-bottom-color: #f9b81b;
+    }
+    .card-custom i {
+      font-size: 3rem;
+      background: #ecf5fc;
+      width: 90px;
+      height: 90px;
+      line-height: 90px !important;
+      border-radius: 50%;
+      color: #0a3d62;
+      margin-bottom: 1.5rem;
+    }
+    .card-custom h4 {
+      font-weight: 700;
+      color: #0a3d62;
+      margin-bottom: 1rem;
+    }
+    .card-custom p {
+      color: #436b8c;
+    }
+    /* small responsive */
+    @media (max-width: 768px) {
+      .jumbotron h1 {
+        font-size: 2.4rem;
+      }
+      .btn-primary, .btn-outline-accent {
+        display: block;
+        width: 90%;
+        margin: 0.8rem auto;
+      }
+    }
+    /* footer style (if not styled, we add a little) */
+    footer, .footer {
+      background: #0a1a2b;
+      color: #b0c8da;
+      padding: 2rem 0;
+    }
+  </style>
+</head>
+<body>
+
+  {% include "insurance/navbar.html" %}
+  
+  <!-- main welcome jumbotron (interactive) -->
+  <div class="jumbotron text-center">
+    <div class="container">
+      <h1 class="display-4"><i class="fas fa-user-circle" style="color: #f9b81b; margin-right: 15px;"></i>Hello, Customer</h1>
+      <p class="lead">Welcome to Insurance Management System – your secure portal</p>
+      <hr>
+      <p style="font-size: 1.2rem; color: #2f5777; margin-bottom: 2.5rem;">Access your policies, claims, and benefits after login. <br>New here? Join in seconds.</p>
+      
+      <!-- action buttons with icons -->
+      <div class="d-flex flex-wrap justify-content-center">
+        <a class="btn btn-primary btn-lg" href="customersignup" role="button">
+          <i class="fas fa-user-plus"></i> Create Account
+        </a>
+        <a class="btn btn-outline-accent btn-lg" href="customerlogin" role="button">
+          <i class="fas fa-sign-in-alt"></i> Login
+        </a>
+      </div>
+      
+      <!-- subtle decorative element -->
+      <div style="margin-top: 2.5rem; color: #a1c0db;">
+        <i class="fas fa-shield-alt fa-2x" style="opacity: 0.5;"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- additional feature cards – interactive and responsive -->
+  <div class="feature-cards">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <div class="card-custom">
+            <i class="fas fa-file-invoice"></i>
+            <h4>Policy Management</h4>
+            <p>View your active policies, download documents, and track renewals.</p>
+            <a href="#" class="stretched-link" style="color: #f9b81b; font-weight: 600;">Learn more →</a>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="card-custom">
+            <i class="fas fa-notes-medical"></i>
+            <h4>Claims & Support</h4>
+            <p>File a claim, check status, or chat with a claims assistant 24/7.</p>
+            <a href="#" class="stretched-link" style="color: #f9b81b; font-weight: 600;">Learn more →</a>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="card-custom">
+            <i class="fas fa-gift"></i>
+            <h4>Exclusive Benefits</h4>
+            <p>Member perks: wellness discounts, no-claim bonuses, and more.</p>
+            <a href="#" class="stretched-link" style="color: #f9b81b; font-weight: 600;">Learn more →</a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- extra row: testimonial / trust message -->
+      <div class="row mt-5">
+        <div class="col-12 text-center">
+          <div style="background: white; border-radius: 3rem; padding: 2rem; box-shadow: 0 10px 25px rgba(0,0,0,0.02);">
+            <i class="fas fa-quote-left" style="color: #f9b81b; font-size: 2rem; opacity: 0.5;"></i>
+            <p style="font-size: 1.3rem; font-weight: 300; max-width: 800px; margin: 0 auto; color: #1e3d5e;">
+              "Secure, fast and transparent – managing my insurance has never been easier."
+            </p>
+            <p style="margin-top: 1rem; color: #6c8da8;">— Maria T., customer since 2021</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  {% include "insurance/footer.html" %}
+
+  <!-- Bootstrap JS (optional for some interactions, but not strictly needed) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

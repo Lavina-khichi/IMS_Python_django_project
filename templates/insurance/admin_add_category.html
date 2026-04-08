@@ -1,0 +1,337 @@
+{% extends 'insurance/adminbase.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+<head>
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, #0a3d62, #135b8d);
+            padding: 30px;
+            border-radius: 2rem;
+            margin-bottom: 30px;
+            color: white;
+            box-shadow: 0 20px 40px rgba(10, 61, 98, 0.2);
+        }
+        
+        .page-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .page-header h2 i {
+            color: #f9b81b;
+            margin-right: 15px;
+        }
+        
+        .page-header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .breadcrumb-custom {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-top: 15px;
+        }
+        
+        .breadcrumb-custom a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .breadcrumb-custom a:hover {
+            color: #f9b81b;
+        }
+        
+        .breadcrumb-custom i {
+            color: #f9b81b;
+            font-size: 0.8rem;
+        }
+        
+        .breadcrumb-custom span {
+            color: #f9b81b;
+            font-weight: 600;
+        }
+        
+        .form-container {
+            background: white;
+            border-radius: 2rem;
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .form-group-custom {
+            margin-bottom: 2rem;
+        }
+        
+        .form-group-custom label {
+            font-weight: 600;
+            color: #0a3d62;
+            margin-bottom: 0.8rem;
+            display: block;
+            font-size: 1.1rem;
+        }
+        
+        .form-group-custom label i {
+            color: #f9b81b;
+            margin-right: 10px;
+        }
+        
+        .input-wrapper {
+            position: relative;
+        }
+        
+        .input-wrapper i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8aa9c9;
+            font-size: 1.2rem;
+        }
+        
+        .form-control-custom {
+            width: 100%;
+            padding: 1rem 1rem 1rem 50px;
+            border: 2px solid #e1ecf5;
+            border-radius: 1.5rem;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-control-custom:focus {
+            border-color: #f9b81b;
+            box-shadow: 0 0 0 4px rgba(249, 184, 27, 0.15);
+            outline: none;
+        }
+        
+        .form-control-custom::placeholder {
+            color: #b0c8da;
+            font-style: italic;
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, #0a3d62, #135b8d);
+            border: none;
+            border-radius: 3rem;
+            padding: 1.2rem 2.5rem;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: white;
+            box-shadow: 0 15px 30px rgba(10, 61, 98, 0.3);
+            transition: all 0.3s;
+            width: 100%;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-submit::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-submit:hover::before {
+            left: 100%;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 40px rgba(10, 61, 98, 0.4);
+        }
+        
+        .btn-submit i {
+            margin-right: 10px;
+            color: #f9b81b;
+        }
+        
+        .info-box {
+            background: #f8fcff;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            margin-top: 30px;
+            border-left: 4px solid #f9b81b;
+        }
+        
+        .info-box h5 {
+            color: #0a3d62;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .info-box h5 i {
+            color: #f9b81b;
+            margin-right: 8px;
+        }
+        
+        .info-box p {
+            color: #5e7d9c;
+            margin-bottom: 5px;
+        }
+        
+        .info-box ul {
+            color: #5e7d9c;
+            padding-left: 20px;
+        }
+        
+        .info-box li {
+            margin-bottom: 5px;
+        }
+        
+        /* Message styles */
+        .messages {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+        
+        .alert-success {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            color: #065f46;
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            margin-bottom: 10px;
+            animation: slideIn 0.5s ease;
+        }
+        
+        .alert-error {
+            background: #fee2e2;
+            border-left: 4px solid #ef4444;
+            color: #991b1b;
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            margin-bottom: 10px;
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 1.5rem;
+            }
+            
+            .page-header {
+                padding: 20px;
+            }
+            
+            .page-header h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<div class="container-fluid px-0">
+    <!-- Page Header -->
+    <div class="page-header">
+        <h2>
+            <i class="fas fa-folder-plus"></i>
+            Add New Category
+        </h2>
+        <p>Create a new insurance category for your policies</p>
+        <div class="breadcrumb-custom">
+            <a href="/admin-dashboard">Dashboard</a>
+            <i class="fas fa-chevron-right"></i>
+            <a href="/admin-category">Categories</a>
+            <i class="fas fa-chevron-right"></i>
+            <span>Add Category</span>
+        </div>
+    </div>
+    
+    <!-- Display Django messages -->
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="alert-{{ message.tags }}"{% endif %}>
+            <i class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %}"></i>
+            {{ message }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    
+    <!-- Form Container -->
+    <div class="form-container">
+        <form method="POST" autocomplete="off" id="addCategoryForm">
+            {% csrf_token %}
+            
+            <div class="form-group-custom">
+                <label for="category_name">
+                    <i class="fas fa-tag"></i>
+                    Category Name
+                </label>
+                <div class="input-wrapper">
+                    <i class="fas fa-folder"></i>
+                    {% render_field categoryForm.category_name class="form-control-custom" placeholder="e.g., Life Insurance, Health Insurance, Vehicle Insurance" %}
+                </div>
+                <small style="color: #8aa9c9; margin-top: 5px; display: block;">
+                    <i class="fas fa-info-circle"></i>
+                    Choose a descriptive name for the category
+                </small>
+            </div>
+            
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-plus-circle"></i>
+                Create Category
+            </button>
+        </form>
+        
+        <!-- Info Box -->
+        <div class="info-box">
+            <h5>
+                <i class="fas fa-lightbulb"></i>
+                Category Tips
+            </h5>
+            <p>✓ Use clear, descriptive names for categories</p>
+            <p>✓ Examples: Life Insurance, Health Insurance, Vehicle Insurance, Home Insurance</p>
+            <p>✓ Categories help customers find policies easily</p>
+            <p>✓ You can create multiple policies under each category</p>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+    // Real form submission with loading state
+    document.getElementById('addCategoryForm').addEventListener('submit', function(e) {
+        const submitBtn = this.querySelector('.btn-submit');
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
+        submitBtn.disabled = true;
+    });
+    
+    // Input focus effects
+    document.querySelectorAll('.form-control-custom').forEach(input => {
+        input.addEventListener('focus', function() {
+            this.parentElement.querySelector('i').style.color = '#f9b81b';
+        });
+        
+        input.addEventListener('blur', function() {
+            this.parentElement.querySelector('i').style.color = '#8aa9c9';
+        });
+    });
+</script>
+
+{% endblock content %}

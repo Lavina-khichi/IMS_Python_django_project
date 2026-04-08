@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SafeGuard Insurance | home</title>
+  <!-- Font Awesome 5 (icons) & Google Fonts for modern typography -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <!-- Bootstrap 4 (light version) + subtle shadow/radius utilities -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+  <!-- Include the updated navbar styles are already inside navbar.html, but we also add page-specific styling -->
+  <style>
+    /* ===== ROOT VARIABLES & GLOBAL ===== */
+    :root {
+      --primary: #0a3d62;
+      --primary-dark: #083358;
+      --accent: #f9b81b;
+      --accent-light: #ffe18a;
+      --light-bg: #f8faff;
+      --text-dark: #2c3e50;
+      --text-soft: #4a5c6c;
+      --white: #ffffff;
+      --shadow-sm: 0 10px 30px rgba(0,20,40,0.08);
+      --shadow-hover: 0 20px 35px rgba(0,35,70,0.12);
+      --border-radius-card: 1.2rem;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text-dark);
+      background-color: var(--white);
+      line-height: 1.6;
+      padding-top: 76px; /* room for fixed navbar */
+    }
+
+    /* smooth scroll & anchor offset (for fixed navbar) */
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 76px; /* height of fixed navbar */
+    }
+
+    /* HERO section with overlay and modern background treatment */
+    .hero-jumbotron {
+      margin-bottom: 0;
+      padding: 0 !important;
+      position: relative;
+      background: unset;
+    }
+
+    .xyz {
+      min-height: 85vh;
+      background-image: linear-gradient(135deg, rgba(10,61,98,0.65) 0%, rgba(0,40,70,0.45) 100%), url('{% static "image/homepage.jpg" %}');
+      background-size: cover;
+      background-position: center 30%;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      position: relative;
+    }
+
+    /* glassmorphism container inside hero for tagline + CTA */
+    .hero-overlay-content {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 2.5rem;
+      padding: 2.5rem 3rem;
+      display: inline-block;
+      max-width: 700px;
+      margin: 0 auto;
+      border: 1px solid rgba(255,255,240,0.2);
+      box-shadow: 0 30px 50px rgba(0,0,0,0.2);
+    }
+
+    .hero-overlay-content h1 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      color: white;
+      text-shadow: 2px 4px 20px rgba(0,20,30,0.6);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .hero-overlay-content .lead {
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: rgba(255,255,255,0.95);
+      text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+    .hero-cta {
+      margin-top: 2rem;
+    }
+
+    .hero-cta .btn {
+      padding: 0.8rem 2.5rem;
+      font-weight: 600;
+      border-radius: 50px;
+      margin: 0.5rem;
+    }
+
+    .btn-primary-custom {
+      background: var(--accent);
+      border: none;
+      color: var(--primary-dark);
+      box-shadow: 0 10px 20px rgba(249,184,27,0.3);
+    }
+
+    .btn-primary-custom:hover {
+      background: #ffc34d;
+      color: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(249,184,27,0.4);
+    }
+
+    .btn-outline-light-custom {
+      background: transparent;
+      border: 2px solid white;
+      color: white;
+      backdrop-filter: blur(5px);
+    }
+
+    .btn-outline-light-custom:hover {
+      background: white;
+      color: var(--primary);
+      border-color: white;
+    }
+
+    /* features / services section */
+    .feature-section {
+      background: var(--light-bg);
+      padding: 5rem 0;
+      border-radius: 3rem 3rem 0 0;
+      margin-top: -2rem;
+      position: relative;
+      z-index: 5;
+    }
+
+    .section-title {
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .section-subhead {
+      color: var(--text-soft);
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .card-policy {
+      background: white;
+      border: none;
+      border-radius: var(--border-radius-card);
+      padding: 2rem 1.5rem;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.25s;
+      height: 100%;
+      border-bottom: 4px solid transparent;
+    }
+
+    .card-policy:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-hover);
+      border-bottom-color: var(--accent);
+    }
+
+    .card-policy i {
+      font-size: 3rem;
+      color: var(--primary);
+      background: #ecf5fc;
+      width: 80px;
+      height: 80px;
+      line-height: 80px !important;
+      border-radius: 50%;
+      margin-bottom: 1.5rem;
+      display: inline-block;
+    }
+
+    .card-policy h5 {
+      font-weight: 700;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-policy p {
+      color: #5e6f7e;
+    }
+
+    /* quote strip */
+    .quote-strip {
+      background: linear-gradient(105deg, var(--primary) 0%, #155b95 100%);
+      color: white;
+      padding: 3.5rem 2rem;
+      text-align: center;
+    }
+
+    .quote-strip p {
+      font-size: 1.7rem;
+      font-weight: 300;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .quote-strip .quote-author {
+      font-size: 1.2rem;
+      letter-spacing: 1px;
+      margin-top: 1.5rem;
+      opacity: 0.9;
+    }
+
+    .quote-strip i {
+      color: var(--accent);
+      font-size: 2rem;
+      opacity: 0.5;
+      margin: 0 0.5rem;
+    }
+
+    /* footer styling (targets the included footer) */
+    .footer, footer {
+      background: #132b41 !important;
+      color: #cddbe8 !important;
+      padding: 3rem 0 2rem !important;
+      margin-top: 0 !important;
+    }
+    .footer a, footer a {
+      color: #f0f9ff !important;
+    }
+    .footer a:hover, footer a:hover {
+      color: var(--accent) !important;
+      text-decoration: none;
+    }
+
+    /* responsiveness tweaks */
+    @media (max-width: 768px) {
+      .hero-overlay-content h1 {
+        font-size: 2.5rem;
+      }
+      .hero-overlay-content {
+        padding: 2rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVBAR (included from updated navbar.html) ===== -->
+  {% include "insurance/navbar.html" %}
+
+  <!-- ===== HERO SECTION with jumbotron + overlay + CTA ===== -->
+  <section id="hero" class="jumbotron jumbotron-fluid hero-jumbotron">
+    <div class="xyz d-flex justify-content-center align-items-center">
+      <div class="container text-center">
+        <!-- attractive overlay content -->
+        <div class="hero-overlay-content">
+          <h1>Your future, <br>protected today.</h1>
+          <p class="lead">Tailored insurance plans for life, health & family</p>
+          <div class="hero-cta">
+            <a href="#" class="btn btn-primary-custom btn-lg"><i class="fas fa-calculator mr-2"></i>Get a quote</a>
+            <a href="#" class="btn btn-outline-light-custom btn-lg"><i class="fas fa-play mr-2"></i>Learn more</a>
+          </div>
+        </div>
+      </div>  
+    </div>
+  </section>
+
+  <!-- ===== FEATURE CARDS (policy features) ===== -->
+  <section id="features" class="feature-section">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="section-title">Why families choose us</h2>
+        <p class="section-subhead">Comprehensive coverage that grows with you — simple, transparent, and reliable.</p>
+      </div>
+      <div class="row">
+        <div class="col-md-6 col-lg-3 mb-4">
+          <div class="card-policy text-center">
+            <i class="fas fa-heartbeat"></i>
+            <h5>Health</h5>
+            <p>Cashless hospitalisation, wellness benefits & preventive care.</p>
+            <a href="#" class="stretched-link" style="color: var(--primary); font-weight: 600;">Learn more →</a>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 mb-4">
+          <div class="card-policy text-center">
+            <i class="fas fa-car"></i>
+            <h5>Auto</h5>
+            <p>Zero-dep cover, roadside assistance & no-claim bonus protection.</p>
+            <a href="#" class="stretched-link" style="color: var(--primary); font-weight: 600;">Learn more →</a>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 mb-4">
+          <div class="card-policy text-center">
+            <i class="fas fa-home"></i>
+            <h5>Home</h5>
+            <p>Structure, content & liability cover – from fire to floods.</p>
+            <a href="#" class="stretched-link" style="color: var(--primary); font-weight: 600;">Learn more →</a>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 mb-4">
+          <div class="card-policy text-center">
+            <i class="fas fa-umbrella-beach"></i>
+            <h5>Travel</h5>
+            <p>International medical, trip cancellation & lost baggage.</p>
+            <a href="#" class="stretched-link" style="color: var(--primary); font-weight: 600;">Learn more →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT / QUOTE SECTION (original Dinara quote upgraded) ===== -->
+  <div id="about" class="quote-strip">
+    <div class="container">
+      <i class="fas fa-quote-left"></i>
+      <p class="lead">“Whole life does two things for you: Protects your family and allows you to save for your future.”</p>
+      <div class="quote-author">— Dinara, SafeGuard policyholder since 2012 <i class="fas fa-star" style="color: var(--accent);"></i><i class="fas fa-star" style="color: var(--accent);"></i><i class="fas fa-star" style="color: var(--accent);"></i></div>
+    </div>
+  </div>
+
+  <!-- ===== ADDITIONAL FEATURE: testimonials / contact hint ===== -->
+  <section class="py-5 bg-white">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-6 mb-4 mb-md-0">
+          <h3 style="font-weight: 700; color: var(--primary);">Need expert advice?</h3>
+          <p class="lead" style="color: #3a546d;">Our advisors are one click away. Let’s build a policy that fits your life perfectly.</p>
+          <a href="#" class="btn btn-outline-primary btn-lg mt-2"><i class="fas fa-phone-alt mr-2"></i>Call us now</a>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-6">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-check-circle fa-2x" style="color: var(--accent); margin-right: 15px;"></i>
+                <span style="font-weight:600;">98% claim <br>settlement</span>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-clock fa-2x" style="color: var(--accent); margin-right: 15px;"></i>
+                <span style="font-weight:600;">24/7 <br>assistance</span>
+              </div>
+            </div>
+            <div class="col-6 mt-4">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-mobile-alt fa-2x" style="color: var(--accent); margin-right: 15px;"></i>
+                <span style="font-weight:600;">Easy app <br>management</span>
+              </div>
+            </div>
+            <div class="col-6 mt-4">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-hand-holding-heart fa-2x" style="color: var(--accent); margin-right: 15px;"></i>
+                <span style="font-weight:600;">+20 years <br>of trust</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER (included from original footer.html) ===== -->
+  {% include "insurance/footer.html" %}
+
+  <!-- Bootstrap & dependencies (already in navbar but ensure they're present) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- small smooth scroll for internal links (optional) -->
+  <script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+</body>
+</html>
