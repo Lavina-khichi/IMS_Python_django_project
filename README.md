@@ -9,7 +9,7 @@
 ### Policy Record
 ![invoice snap](https://github.com/Lavina-khichi/IMS_Python_django_project/blob/main/static/screenshots/policyrecord.png)
 ### Policy 
-![doctor snap](https://github.com/sumitkumar1503/insurancemanagement/blob/master/static/screenshots/policy.png?raw=true)
+![doctor snap](https://github.com/Lavina-khichi/IMS_Python_django_project/blob/main/static/screenshots/policy.png)
 ---
 ## Functions
 ### Admin
