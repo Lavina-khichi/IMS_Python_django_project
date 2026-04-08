@@ -7,7 +7,7 @@
 ### Admin Dashboard
 ![dashboard snap](https://github.com/Lavina-khichi/IMS_Python_django_project/blob/main/static/screenshots/dashboard.png)
 ### Policy Record
-![invoice snap](https://github.com/sumitkumar1503/insurancemanagement/blob/master/static/screenshots/policyrecord.png?raw=true)
+![invoice snap](https://github.com/Lavina-khichi/IMS_Python_django_project/blob/main/static/screenshots/policyrecord.png)
 ### Policy 
 ![doctor snap](https://github.com/sumitkumar1503/insurancemanagement/blob/master/static/screenshots/policy.png?raw=true)
 ---
